@@ -18,7 +18,7 @@ def event(event_id):
         cls.__event_id__ = event_id
         cls.__meta_fields__ = {}
 
-        for attr in cls.__dict__:
+        for attr in dir(cls):
             fi = getattr(cls, attr)
             if hasattr(fi, "__field_id__"):
                 cls.__meta_fields__[attr] = (fi.__field_id__, fi.__field_type__)
@@ -38,20 +38,37 @@ def field(field_id, field_type):
     return _wraper
 
 
-class Student(object):
+class uint(object):
+
     def __init__(self):
-        self.name = "tom"
-        self.id = 11
+        self.value = 0
+
+    def __get__(self, obj, cls):
+        return self.value
+
+    def __set__(self, obj, val):
+        self.value = val
 
 
-@event(1000)
-class Event(object):
+class int64(object):
 
-    @field(1, int)
-    def event_id(self): pass
+    def __init__(self):
+        self.value = 0
 
-    @field(2, float)
-    def event_rate(self): pass
+    def __get__(self, obj ,cls):
+        return self.value
 
-    @field(3, Student)
-    def student_name(self): pass
+    def __set__(self, obj, val):
+        self.value = val
+
+
+class uint64(object):
+
+    def __init__(self):
+        self.value = 0
+
+    def __get__(self, obj, cls):
+        return self.value
+
+    def __set__(self, obj, val):
+        self.value = val
