@@ -3,6 +3,42 @@ import struct
 
 MAX_CLASS_FIELD_NUM = 1000
 
+def logfunc(func): pass
+
+class uint(object):
+
+    def __init__(self, default=0):
+        self.value = default
+
+    def __get__(self, obj, cls):
+        return self.value
+
+    def __set__(self, obj, val):
+        self.value = val
+
+
+class int64(object):
+
+    def __init__(self):
+        self.value = 0
+
+    def __get__(self, obj ,cls):
+        return self.value
+
+    def __set__(self, obj, val):
+        self.value = val
+
+
+class uint64(object):
+
+    def __init__(self):
+        self.value = 0
+
+    def __get__(self, obj, cls):
+        return self.value
+
+    def __set__(self, obj, val):
+        self.value = val
 def echo_attributes(obj):
     print("attributes for {0}".format(obj.__name__))
     for a in dir(obj):
@@ -67,37 +103,3 @@ def field(field_id, field_type):
     return _wraper
 
 
-class uint(object):
-
-    def __init__(self):
-        self.value = 0
-
-    def __get__(self, obj, cls):
-        return self.value
-
-    def __set__(self, obj, val):
-        self.value = val
-
-
-class int64(object):
-
-    def __init__(self):
-        self.value = 0
-
-    def __get__(self, obj ,cls):
-        return self.value
-
-    def __set__(self, obj, val):
-        self.value = val
-
-
-class uint64(object):
-
-    def __init__(self):
-        self.value = 0
-
-    def __get__(self, obj, cls):
-        return self.value
-
-    def __set__(self, obj, val):
-        self.value = val
