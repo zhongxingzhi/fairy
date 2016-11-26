@@ -15,7 +15,7 @@ class Serializer(object):
             return None
 
         out_stream = io.BytesIO()
-        fields = obj.__meta_fields__
+        fields = sorted(obj.__meta_fields__.items(), key = lambda x: x[1][0])
         for (fkey, fval) in fields:
             out_stream.write(get_bytes(fval.__field_type__, getattr(obj, fkey)))
 
