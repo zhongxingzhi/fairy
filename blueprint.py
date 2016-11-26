@@ -33,23 +33,25 @@ def packet(cls):
     else:
         cls.__packet_id__ = 0
 
+    if not hasattr(cls, "__meta_fields__"):
+          cls.__meta_fields__ = {}
+
+    for attr in cls.__dict__:
+        fi = getattr(cls, attr)
+        if hasattr(fi, "__field_id__"):
+            #echo_attributes(fi)
+            cls_name = fi.__qualname__.split('.')[0]
+            packet_id = get_packet_id(cls, cls_name)
+            #print("packet_id = {0}, cls_name = {1}".format(packet_id, cls_name))
+            cls.__meta_fields__[attr] = (fi.__field_id__ + packet_id, fi.__field_type__)
+            setattr(cls, attr, FieldObject(fi.__field_type__))
+
     return cls
 
 def event(event_id):
     def _wraper(cls):
         cls = packet(cls)
         cls.__event_id__ = event_id
-        cls.__meta_fields__ = {}
-
-        for attr in dir(cls):
-            fi = getattr(cls, attr)
-            if hasattr(fi, "__field_id__"):
-                #echo_attributes(fi)
-                cls_name = fi.__qualname__.split('.')[0]
-                packet_id = get_packet_id(cls, cls_name)
-                #print("packet_id = {0}, cls_name = {1}".format(packet_id, cls_name))
-                cls.__meta_fields__[attr] = (fi.__field_id__ + packet_id, fi.__field_type__)
-                setattr(cls, attr, FieldObject(fi.__field_type__))
 
         return cls
 

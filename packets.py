@@ -14,15 +14,15 @@ class GamePacket(object):
 @packet
 class ConnectPacket(GamePacket):
 
-    @field(100, int)
+    @field(1, int)
     def connect_cmd(self): pass
 
 
 @event(8)
 class PunchPacket(ConnectPacket):
 
-    @field(200, int)
+    @field(1, int)
     def process_id(self): pass
 
-    @field(201, int)
+    @field(2, int)
     def machine_id(self): pass
