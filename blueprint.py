@@ -47,8 +47,8 @@ def event(event_id):
                 #echo_attributes(fi)
                 cls_name = fi.__qualname__.split('.')[0]
                 packet_id = get_packet_id(cls, cls_name)
-                print("packet_id = {0}, cls_name = {1}".format(packet_id, cls_name))
-                cls.__meta_fields__[attr] = (fi.__field_id__, fi.__field_type__)
+                #print("packet_id = {0}, cls_name = {1}".format(packet_id, cls_name))
+                cls.__meta_fields__[attr] = (fi.__field_id__ + packet_id, fi.__field_type__)
                 setattr(cls, attr, FieldObject(fi.__field_type__))
 
         return cls
