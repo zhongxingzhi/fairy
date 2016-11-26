@@ -1,6 +1,14 @@
 import struct
 
 
+MAX_CLASS_FIELD_NUM = 1000
+
+def echo_attributes(obj):
+    print("attributes for {0}".format(obj.__name__))
+    for a in dir(obj):
+        print("{0}: {1}".format(a, getattr(obj, a)))
+
+
 class FieldObject(object):
 
     def __init__(self, value_type):
@@ -12,15 +20,24 @@ class FieldObject(object):
     def __set__(self, obj, val):
         self.value = val
 
+def packet(cls):
+    if len(cls.__base__) == 1 and hasattr(cls.__base__[0], "__packet_id__"):
+        cls.__packet_id__ = cls.__base__[0].__packet_id__ + MAX_CLASS_FIELD_NUM
+    else:
+        cls.__packet_id__ = 0
+
+    return cls
 
 def event(event_id):
     def _wraper(cls):
+        cls = packet(cls)
         cls.__event_id__ = event_id
         cls.__meta_fields__ = {}
 
         for attr in dir(cls):
             fi = getattr(cls, attr)
             if hasattr(fi, "__field_id__"):
+                echo_attributes(fi)
                 cls.__meta_fields__[attr] = (fi.__field_id__, fi.__field_type__)
                 setattr(cls, attr, FieldObject(fi.__field_type__))
 

@@ -1,6 +1,7 @@
 from .blueprint import *
 
 
+@packet
 class GamePacket(object):
 
     @field(1, uint)
@@ -10,6 +11,7 @@ class GamePacket(object):
     def packet_sum(self): pass
 
 
+@packet
 class ConnectPacket(GamePacket):
 
     @field(100, int)
